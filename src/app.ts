@@ -25,7 +25,7 @@ app.innerHTML = `
   <main id="conteudo">
     <section class="hero shell" aria-labelledby="hero-title">
       <div class="hero-topline"><span>PORTFÓLIO / 2026</span><span>DESENVOLVIMENTO · DADOS · QUALIDADE</span></div>
-      <div class="hero-title-wrap"><p class="hero-kicker"><span class="availability-dot" aria-hidden="true"></span> Aberto a estágios em backend e Dados/IA</p><h1 id="hero-title">Pedro Henrique<br><span>Menezes<span class="period">.</span></span></h1></div>
+      <div class="hero-title-wrap"><p class="hero-kicker"><span class="availability-dot" aria-hidden="true"></span> Aberto a estágios em backend e Dados/IA</p><h1 id="hero-title" aria-label="Pedro Henrique Menezes"><span class="name-line" data-text="Pedro Henrique" aria-hidden="true"><span class="name-placeholder">Pedro Henrique</span><span class="name-typed"><span class="typing-copy"></span></span></span><span class="name-line name-line-last" data-text="Menezes" aria-hidden="true"><span class="name-placeholder">Menezes.</span><span class="name-typed"><span class="typing-copy"></span><span class="period" hidden>.</span></span></span></h1></div>
       <div class="hero-bottom"><p class="hero-statement">Construo sistemas e investigo as decisões que eles produzem.</p><div class="hero-intro"><p>Estudante de Ciência da Computação na UFOP. Minha trajetória combina desenvolvimento backend, experiência em QA e pesquisa em equidade de modelos de aprendizado de máquina.</p><a class="underlined-link" href="#trabalhos">Conhecer meu trabalho <span aria-hidden="true">↘</span></a></div></div>
       <div class="hero-footnote"><span>01 — SOFTWARE</span><span>02 — DADOS & IA</span><span>03 — QUALIDADE</span><span>ROLE PARA EXPLORAR ↓</span></div>
     </section>
@@ -62,6 +62,52 @@ filters.forEach(button => button.addEventListener('click', () => {
   renderProjects(filter);
 }));
 renderProjects('todos');
+
+const nameLines = [...document.querySelectorAll<HTMLElement>('.name-line')];
+const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+let typingCancelled = false;
+
+function showFullName(): void {
+  nameLines.forEach(line => {
+    const copy = line.querySelector<HTMLElement>('.typing-copy');
+    if (copy) copy.textContent = line.dataset.text ?? '';
+    const period = line.querySelector<HTMLElement>('.period');
+    if (period) period.hidden = false;
+    line.classList.remove('is-typing');
+  });
+}
+
+function pause(duration: number): Promise<void> {
+  return new Promise(resolve => window.setTimeout(resolve, duration));
+}
+
+async function typeName(): Promise<void> {
+  if (motionPreference.matches) { showFullName(); return; }
+
+  for (const line of nameLines) {
+    if (typingCancelled) return;
+    const copy = line.querySelector<HTMLElement>('.typing-copy');
+    if (!copy) continue;
+    line.classList.add('is-typing');
+
+    for (const character of Array.from(line.dataset.text ?? '')) {
+      if (typingCancelled) return;
+      copy.textContent += character;
+      await pause(character === ' ' ? 120 : 70);
+    }
+
+    const period = line.querySelector<HTMLElement>('.period');
+    if (period) period.hidden = false;
+    await pause(300);
+    if (typingCancelled) return;
+    line.classList.remove('is-typing');
+  }
+}
+
+motionPreference.addEventListener('change', event => {
+  if (event.matches) { typingCancelled = true; showFullName(); }
+});
+void typeName();
 
 const themeButton = document.querySelector<HTMLButtonElement>('#theme-toggle');
 const themeLabel = themeButton?.querySelector<HTMLElement>('.theme-label');
