@@ -80,7 +80,13 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
 .hero-kicker { display: flex; align-items: center; gap: 10px; margin: 0 0 18px; color: var(--muted); }
 .availability-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 13%, transparent); }
 .hero h1 { margin: 0; font-family: 'Newsreader', Georgia, serif; font-weight: 400; font-size: clamp(82px, 10.8vw, 173px); line-height: .88; letter-spacing: -.067em; }
-.hero h1>span { font-style: italic; }
+.name-line { position: relative; display: block; }
+.name-line-last { font-style: italic; }
+.name-placeholder { display: block; visibility: hidden; }
+.name-typed { position: absolute; inset: 0; }
+.name-line.is-typing .name-typed::after { content: ''; display: inline-block; height: .68em; border-left: .035em solid var(--accent); margin-left: .035em; vertical-align: -.06em; animation: typing-caret .75s step-end infinite; }
+.period[hidden] { display: none; }
+@keyframes typing-caret { 50% { opacity: 0; } }
 .period { color: var(--accent); font-style: normal; }
 .hero-bottom { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(290px, .7fr); gap: 9%; align-items: end; margin-top: 78px; padding-bottom: 56px; }
 .hero-statement { max-width: 740px; margin: 0; font-family: 'Newsreader', Georgia, serif; font-size: clamp(30px, 3.3vw, 50px); line-height: 1.17; letter-spacing: -.03em; }
@@ -218,4 +224,5 @@ h2 em { color: var(--accent); font-weight: 400; }
 @media (prefers-reduced-motion: reduce) {
   :root { scroll-behavior: auto; }
   .work-item, .work-link, .site-nav a { transition: none; }
+  .name-line.is-typing .name-typed::after { animation: none; }
 }
