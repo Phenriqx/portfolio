@@ -1,0 +1,30 @@
+
+### BINARIES ###
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+
+### DOTENV ###
+*.env
+
+### IDE / Editor configs ###
+.vscode/
+.idea/
+*.swp
+
+### PERSONAL DOCUMENTS ###
+# Place the source resume in private/; its contents must not be committed.
+/private/
+**/*[Cc]urr[ií]culo*
+**/*[Rr]esume*
+**/Pedro-Henrique-Feo-CV-*.pdf
+
+### FRONTEND BUILD ###
+node_modules/
+dist/
+
+.aws/
+.agents/
+.codex/
