@@ -12,3 +12,4 @@ for (const file of await readdir(join(output, assets))) {
 }
 
 await writeFile('index.html', await readFile(join(output, 'index.html')));
+await cp(join(output, 'favicon.jpeg'), 'favicon.jpeg');
